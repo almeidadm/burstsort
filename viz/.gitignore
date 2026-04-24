@@ -1,4 +1,9 @@
 .venv/
 __pycache__/
 .pytest_cache/
-media/
+
+# Manim build artifacts (mantém apenas os MP4s finais)
+media/images/
+media/texts/
+media/videos/_smoke_test/
+media/videos/**/partial_movie_files/
