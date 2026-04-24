@@ -1,0 +1,18 @@
+# Algoritmos selecionados para a comparação do trabalho "Cache-Conscious
+# Sorting of Large Sets of Strings with Dynamic Tries" (Sinha & Zobel, JEA 2004).
+#
+# Uma entrada por linha: <id-algoritmo-no-sortstring>   # comentário
+#
+# --- Conjunto canônico (3 algoritmos principais da comparação) ---
+burstsortL        # Burstsort list-based original (Sinha & Zobel, em external/)
+burstsortA        # Burstsort array-based original (Sinha & Zobel, em external/)
+msd_A             # MSD radix sort (implementação "array-based" de Rantala)
+mkqsort_bs        # Multikey Quicksort original de Bentley & Sedgewick
+#
+# --- Variantes extras para análise de sensibilidade (comente se não quiser) ---
+# burstsort_vector                # Burstsort reimplementado por Rantala
+# burstsort_sampling_vector       # Burstsort com amostragem (S&Z 2005)
+# msd_A_adaptive                  # MSD com troca adaptativa para insertion sort
+# msd_ci                          # MSD "cache-inefficient" (baseline)
+# multikey_cache8                 # Multikey Quicksort com cache de 8 bytes
+# quicksort                       # Quicksort ingênuo sobre strings (baseline)

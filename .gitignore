@@ -1,0 +1,13 @@
+build/
+sortstring_log
+datasets/*
+!datasets/.gitkeep
+!datasets/README.md
+!datasets/fetch.sh
+results/*
+!results/.gitkeep
+!results/README.md
+!results/plots/
+*.pyc
+__pycache__/
+.venv/
