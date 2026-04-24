@@ -23,6 +23,10 @@ burst-sort/
 │   ├── algorithms.txt      # lista de algoritmos a serem comparados
 │   ├── run_benchmark.sh    # bateria com perf stat (cache misses, TLB, IPC)
 │   └── summarize.py        # agrega CSV em tabela média ± desvio
+├── viz/                # animação Manim didática do ciclo de vida do burstsort
+│   ├── burstsort_viz/     # simulador Python + cenas Manim
+│   ├── tests/             # pytest validando fidelidade ao C++
+│   └── media/videos/      # MP4s renderizados (apenas finais versionados)
 └── docs/
     ├── plano-experimentos.md  # metodologia completa
     └── algoritmos.md          # mapeamento de variantes do upstream
@@ -76,6 +80,42 @@ instruções.
 Ver `docs/plano-experimentos.md` para metodologia detalhada,
 controles de variância e ameaças à validade. Resultados consolidados
 (1M, 10M, 50M com contadores de hardware) em `docs/resultados.md`.
+
+## Visualização didática (`viz/`)
+
+Animação em [Manim](https://www.manim.community/) do ciclo de vida do
+burstsort variante array-based: **inserção · realloc · burst · travessia**.
+Útil para apresentações e para conferir o entendimento do algoritmo contra
+o código de referência em `upstream/src/burstsort.cpp`.
+
+Arquitetura em duas camadas: um simulador Python puro (`burstsort_viz/model.py`)
+emite um log de eventos fiel ao `insert<>`/`BurstSimple`/`traverse<>` do C++,
+e cenas Manim consomem esse log para animar. Os testes em `viz/tests/`
+validam a correção do simulador antes de qualquer renderização.
+
+Dataset usado: `["a","ab","ac","ad","ba","b"]` com `threshold=3` e
+`init_capacity=2` — escolhido para disparar todas as operações relevantes
+em poucos frames, incluindo a separação no slot `$` (end-of-string) após
+o burst.
+
+```bash
+cd viz
+python3 -m venv .venv && source .venv/bin/activate
+sudo apt install -y libcairo2-dev libpango1.0-dev pkg-config python3-dev ffmpeg
+pip install -r requirements.txt
+
+pytest tests/                                              # valida o simulador
+manim -ql burstsort_viz/scenes/full.py FullLifecycleScene  # render rápido (480p15)
+manim -qh burstsort_viz/scenes/full.py FullLifecycleScene  # render alto (1080p60)
+```
+
+Vídeos renderizados (480p15) ficam em `viz/media/videos/{insert,full}/480p15/`.
+As versões já commitadas estão lá:
+
+| arquivo                                          | duração | tamanho | conteúdo                       |
+|--------------------------------------------------|---------|---------|--------------------------------|
+| `media/videos/insert/480p15/InsertPhaseScene.mp4`| ~18s    | 458 KB  | inserção + realloc 2→4         |
+| `media/videos/full/480p15/FullLifecycleScene.mp4`| ~38s    | 1.1 MB  | ciclo completo end-to-end      |
 
 ## Licença
 
